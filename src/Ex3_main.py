@@ -90,8 +90,8 @@ if __name__ == '__main__':
     #check()
     a = GNode()
     b = GNode()
-    a.add_neighbor(b)
-    print(a.key)
-    print(b.key)
-    print(a.m_neighbors.values())
+    # a.add_neighbor(b)
+    # print(a.key)
+    # print(b.key)
+    # print(a.m_neighbors.values())
 

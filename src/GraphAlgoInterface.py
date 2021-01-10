@@ -1,5 +1,6 @@
 from typing import List
 import src
+from src import GraphInterface
 
 
 class GraphAlgoInterface:
