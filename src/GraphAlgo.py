@@ -22,15 +22,13 @@ class GraphAlgo(GraphAlgoInterface):
     def plot_graph(self) -> None:
         pass
 
-
-class GNode:
-    static_key = 0
-    m_neighbors = {}
-
-    def __init__(self):
-        self.key = self.static_key
-        GNode.static_key += 1
-
-    def add_neighbor(self, neighbor):
-        self.m_neighbors[neighbor.key] = neighbor
-
+    # class GNode:
+    # static_key = 0
+    # m_neighbors = {}
+    #
+    # def __init__(self):
+    #     self.key = self.static_key
+    #     GNode.static_key += 1
+    #
+    # def add_neighbor(self, neighbor):
+    #     self.m_neighbors[neighbor.key] = neighbor

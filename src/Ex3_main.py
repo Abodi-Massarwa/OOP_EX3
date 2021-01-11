@@ -1,6 +1,6 @@
 from DiGraph import DiGraph
 from GraphAlgo import GraphAlgo
-from GraphAlgo import GNode
+
 
 
 def check():
@@ -88,10 +88,47 @@ def check2():
 
 if __name__ == '__main__':
     #check()
-    a = GNode()
-    b = GNode()
-    # a.add_neighbor(b)
-    # print(a.key)
-    # print(b.key)
+    first = DiGraph.GNode()
+    second = DiGraph.GNode()
+    third = DiGraph.GNode()
+    first.add_neighbor(third)
+    third.add_neighbor(second)
+    second.add_neighbor(first)
+    graph = DiGraph()
+    graph.add_node(first.key)
+    graph.add_node(second.key)
+    graph.add_node(third.key)
+    graph.add_edge(first.key, third.key, 100)
+    graph.add_edge(third.key, second.key, 100)
+    graph.add_edge(second.key, first.key, 100)
+    print("graph edges number using the attribute edge quantity")
+    print(graph.edge_quantity)
+    # print(first.key)
+    # print(second.key)
+    # print(third.key)
+    # print(graph.v_size())
+    # print(graph.e_size())
+    # print(graph.m_edges)
+    # print(graph.m_vertices)
+    # graph.remove_edge(2,1)
+    # print(graph.e_size())
+    # print(graph.edge_quantity)
+    # graph.remove_node(0)
+    # print(graph.e_size())
+    # print(graph.m_edges)
+    # print(graph.v_size())
+    # print(graph.edge_quantity)
+    # l=[(x,y)for x,y in graph.m_vertices.items()]
+    # print(l)
+    # print(graph.get_all_v())
+    graph.add_node(3)
+    print(graph.m_edges[1])
+    graph.add_edge(1,3,1337)
+    print(graph.m_edges[1])
+    print(graph.all_in_edges_of_node(1))
+    print(graph.all_out_edges_of_node(1))
+    d={1:{2:100,3:55}}
+    d[1][5]=69
+    print(d)
     # print(a.m_neighbors.values())
 
