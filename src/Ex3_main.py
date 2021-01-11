@@ -127,8 +127,10 @@ if __name__ == '__main__':
     print(graph.m_edges[1])
     print(graph.all_in_edges_of_node(1))
     print(graph.all_out_edges_of_node(1))
-    d={1:{2:100,3:55}}
-    d[1][5]=69
-    print(d)
+    # print(graph.v_size())
+    # print(graph.e_size())
+    # graph.remove_node(3)
+    # print(graph.v_size())
+    # print(graph.e_size())
     # print(a.m_neighbors.values())
 

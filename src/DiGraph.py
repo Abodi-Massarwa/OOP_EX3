@@ -47,9 +47,13 @@ class DiGraph(GraphInterface):
 
     def add_edge(self, id1: int, id2: int, weight: float) -> bool:
         edge = self.GEdge(id1, id2, weight)
-        self.m_edges_inverted[id2] = {id1: edge}
-        self.m_edges[id1] = {id2: edge} ##### TODO: it overrides the prev values !
-        #self.m_edges[id1][id2]= edge ## TODO: this must work !
+        if id1 not in self.m_edges.keys():
+            self.m_edges[id1]= {}
+        if id2 not in self.m_edges_inverted.keys():
+            self.m_edges_inverted[id2] = {}
+
+        self.m_edges_inverted[id2][id1] = edge
+        self.m_edges[id1][id2] = edge
         DiGraph.m_mc += 1
         self.edge_quantity += 1
         return True
