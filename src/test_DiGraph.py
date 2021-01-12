@@ -18,8 +18,14 @@ class TestDiGraph(TestCase):
         pass
 
     def test_get_mc(self):
-        expected = (100000) + (100000 - 1) * 2
+        expected = 100000 + (100000 - 1) * 2
         self.assertTrue(self.graph.get_mc() % expected == 0)
+        for i in range (150000,200000): # 50,0000 action *4 = 200,000
+            self.graph.add_node(i)
+            self.graph.add_edge(i,0,4)
+            self.graph.remove_edge(i,0)
+            self.graph.remove_node(i)
+        self.assertTrue(self.graph.get_mc() % (expected+200000) == 0)
 
     def test_v_size(self):
         self.assertEqual(self.graph.v_size(), 100000)
