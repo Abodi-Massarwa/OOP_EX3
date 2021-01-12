@@ -5,6 +5,7 @@ class DiGraph(GraphInterface):
     m_mc = 0
 
     def __init__(self):
+        self.m_mc = 0
         self.m_vertices = dict()
         self.m_edges = dict()
         self.m_edges_inverted = dict()
@@ -42,7 +43,7 @@ class DiGraph(GraphInterface):
         return self.edge_quantity
 
     def get_mc(self) -> int:
-        return DiGraph.m_mc
+        return self.m_mc
         pass
 
     def add_edge(self, id1: int, id2: int, weight: float) -> bool:
@@ -53,7 +54,7 @@ class DiGraph(GraphInterface):
         edge = self.GEdge(id1, id2, weight)
         self.m_edges_inverted[id2][id1] = edge
         self.m_edges[id1][id2] = edge
-        DiGraph.m_mc += 1
+        self.m_mc += 1
         self.edge_quantity += 1
         return True
         pass
@@ -64,7 +65,7 @@ class DiGraph(GraphInterface):
         self.m_vertices[node_id] = DiGraph.GNode(node_id)
         self.m_edges[node_id] = {}
         self.m_edges_inverted[node_id] = {}
-        DiGraph.m_mc += 1
+        self.m_mc += 1
         return True
         pass
 
@@ -85,31 +86,60 @@ class DiGraph(GraphInterface):
         if type(ans) != DiGraph.GNode:
             return False
         else:
+            # removing the node a source from both m_edges & m_edges_inverted
+            receivers = list(self.m_edges[node_id].keys())
+            for target in receivers:
+                self.m_edges_inverted[target].pop(node_id)
+
             self.m_edges.pop(node_id)
-            for senders in self.m_edges_inverted[node_id].keys():
+            # self.m_edges[node_id]={} # to prevent any KeyError in future calls
+            # removing all the edges involved in our desired node as a destination node
+            for senders in list(self.m_edges_inverted[node_id].keys()):
                 self.m_edges[senders].pop(node_id)
+
                 k += 1
-            DiGraph.m_mc += 1
+            self.m_mc += 1
+            self.m_edges_inverted.pop(node_id)
             self.edge_quantity -= k
+
             return True
 
     # we must also delete the edges using this node as src/dst
 
     def remove_edge(self, node_id1: int, node_id2: int) -> bool:
+        # when removing an edge we must
+        # 1) remove it from the m_edges dict (id1->id2)
+        # 2) remove it from the m_edges_inverted dict (id2->id1)
+        # TODO : retrun false when
+        # TODO 1) there is no such edge (id1 or id2 doesn't exist in our node list)
+        # TODO 2) edge already been removed (nodes do exist but edge doesnt)
+
+        if node_id2 not in self.m_vertices or node_id1 not in self.m_vertices:
+            return False
+
         if node_id2 not in self.m_edges[node_id1].keys():
             return False
-        temp = DiGraph.m_mc
 
-        for key in list((self.m_edges[node_id1]).keys()):
-
-            if key == node_id2:
-                self.m_edges[node_id1].pop(key)
-                DiGraph.m_mc += 1
-
-        if temp == DiGraph.m_mc:
-            return False
+        # else we will do the described above
+        self.m_edges[node_id1].pop(node_id2)
+        self.m_edges_inverted[node_id2].pop(node_id1)
+        self.m_mc += 1
         self.edge_quantity -= 1
-        return True
+
+        # if node_id2 not in self.m_edges[node_id1].keys():
+        #     return False
+        # temp = self.m_mc
+        #
+        # for key in list((self.m_edges[node_id1]).keys()):
+        #
+        #     if key == node_id2:
+        #         self.m_edges[node_id1].pop(key)
+        #         self.m_mc += 1
+        #
+        # if temp == self.m_mc:
+        #     return False
+        # self.edge_quantity -= 1
+        # return True
 
     def get_all_v(self) -> dict:
         return dict((x, y) for x, y in self.m_vertices.items())
