@@ -1,6 +1,8 @@
+import json
+import jsonpickle
+
 from DiGraph import DiGraph
 from GraphAlgo import GraphAlgo
-
 
 
 def check():
@@ -87,22 +89,22 @@ def check2():
 
 
 if __name__ == '__main__':
-    #check()
+    # check()
     first = DiGraph.GNode()
     second = DiGraph.GNode()
     third = DiGraph.GNode()
-    first.add_neighbor(third)
-    third.add_neighbor(second)
-    second.add_neighbor(first)
+    # first.add_neighbor(third)
+    # third.add_neighbor(second)
+    # second.add_neighbor(first)
     graph = DiGraph()
-    graph.add_node(first.key)
+    graph.add_node(first.key,(1,2,3))
     graph.add_node(second.key)
     graph.add_node(third.key)
     graph.add_edge(first.key, third.key, 100)
     graph.add_edge(third.key, second.key, 100)
     graph.add_edge(second.key, first.key, 100)
-    print("graph edges number using the attribute edge quantity")
-    print(graph.edge_quantity)
+    # print("graph edges number using the attribute edge quantity")
+    # print(graph.edge_quantity)
     # print(first.key)
     # print(second.key)
     # print(third.key)
@@ -121,16 +123,34 @@ if __name__ == '__main__':
     # l=[(x,y)for x,y in graph.m_vertices.items()]
     # print(l)
     # print(graph.get_all_v())
-    graph.add_node(3)
-    print(graph.m_edges[1])
-    graph.add_edge(1,3,1337)
-    print(graph.m_edges[1])
-    print(graph.all_in_edges_of_node(1))
-    print(graph.all_out_edges_of_node(1))
+    # graph.add_node(3)
+    # print(graph.m_edges[1])
+    # graph.add_edge(1,3,1337)
+    # print(graph.m_edges[1])
+    # print(graph.all_in_edges_of_node(1))
+    # print(graph.all_out_edges_of_node(1))
     # print(graph.v_size())
     # print(graph.e_size())
     # graph.remove_node(3)
     # print(graph.v_size())
     # print(graph.e_size())
     # print(a.m_neighbors.values())
-
+    #
+    # algo = GraphAlgo(graph)
+    # algo.save_to_json("D.I.E")
+    #
+    # algo_2 = GraphAlgo()
+    # algo_2.load_from_json('D.I.E')
+    #
+    # print (algo_2.m_graph.m_vertices)
+    # print(algo.m_graph.m_vertices)
+    # print(f"the vertices {graph.m_vertices}")
+    # print(graph.m_edges)
+    # print(graph.m_edges_inverted)
+    algo= GraphAlgo(graph)
+    algo.save_to_json("NoorBsoul")
+    algo2=GraphAlgo(graph)
+    algo2.load_from_json("NoorBsoul")
+    print(algo.m_graph.m_edges)
+    print(algo.m_graph.m_edges_inverted)
+    # print(algo2.m_graph.m_edges)

@@ -2,15 +2,13 @@ from GraphInterface import GraphInterface
 
 
 class DiGraph(GraphInterface):
-    m_mc = 0
 
     def __init__(self):
         self.m_mc = 0
         self.m_vertices = dict()
-        self.m_edges = dict()
+        self.m_edges = dict()  # {1:{2:EdgeData,3:EdgeData,......k:Edge}
         self.m_edges_inverted = dict()
         self.edge_quantity = 0
-        pass
 
     class GEdge:
         def __init__(self, src: int, dst: int, weight: float):
@@ -22,7 +20,7 @@ class DiGraph(GraphInterface):
         static_key = 0
 
         def __init__(self, key=-1):
-            self.m_neighbors = dict()
+
             if key == -1:
                 self.key = self.static_key
                 DiGraph.GNode.static_key += 1
@@ -31,9 +29,6 @@ class DiGraph(GraphInterface):
 
         def __int__(self, key: int):
             self.key = id
-
-        def add_neighbor(self, neighbor):
-            self.m_neighbors[neighbor.key] = neighbor
 
     def v_size(self) -> int:
         return len(self.m_vertices)
@@ -62,7 +57,7 @@ class DiGraph(GraphInterface):
     def add_node(self, node_id: int, pos: tuple = None) -> bool:
         if node_id in self.m_vertices.keys():
             return False
-        self.m_vertices[node_id] = DiGraph.GNode(node_id)
+        self.m_vertices[node_id] = [DiGraph.GNode(node_id), pos]
         self.m_edges[node_id] = {}
         self.m_edges_inverted[node_id] = {}
         self.m_mc += 1
@@ -149,3 +144,28 @@ class DiGraph(GraphInterface):
 
     def all_out_edges_of_node(self, id1: int) -> dict:
         return dict((x, y.weight) for x, y in self.m_edges[id1].items())
+
+
+# def parse_json(graph: DiGraph):
+#     graph_copy = DiGraph()
+#     graph_copy.m_mc = graph.m_mc
+#     graph_copy.m_vertices = graph.m_vertices
+#     graph_copy.m_edges = graph.m_edges
+#     graph_copy.m_edges_inverted = graph.m_edges_inverted
+#     graph_copy.edge_quantity = graph.edge_quantity
+#
+#     dict = graph_copy.__dict__
+#     for x, y in dict['m_vertices'].items():
+#         dict['m_vertices'][x] = y.__dict__
+#
+#     l = list(dict['m_edges'].keys())
+#     for key in l:
+#         for x, y in dict['m_edges'][key].items():
+#             dict['m_edges'][key][x] = y.__dict__
+#
+#     l_inverted = list(dict['m_edges_inverted'].keys())
+#     for key in l:
+#         for x, y in dict['m_edges_inverted'][key].items():
+#             dict['m_edges_inverted'][key][x] = y.__dict__
+#
+#     return dict
