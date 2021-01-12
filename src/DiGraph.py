@@ -46,6 +46,10 @@ class DiGraph(GraphInterface):
         pass
 
     def add_edge(self, id1: int, id2: int, weight: float) -> bool:
+        if id1 not in self.m_vertices.keys() or id2 not in self.m_vertices.keys():
+            return False
+        if id2 in self.m_edges[id1]:
+            return False
         edge = self.GEdge(id1, id2, weight)
         self.m_edges_inverted[id2][id1] = edge
         self.m_edges[id1][id2] = edge
@@ -55,6 +59,8 @@ class DiGraph(GraphInterface):
         pass
 
     def add_node(self, node_id: int, pos: tuple = None) -> bool:
+        if node_id in self.m_vertices.keys():
+            return False
         self.m_vertices[node_id] = DiGraph.GNode(node_id)
         self.m_edges[node_id] = {}
         self.m_edges_inverted[node_id] = {}
@@ -63,6 +69,8 @@ class DiGraph(GraphInterface):
         pass
 
     def remove_node(self, node_id: int) -> bool:
+        if node_id not in self.m_vertices.keys():
+            return False
         # when removing any node we shall check for the edges going out of the node and delete them also we must
         # check for the edges this node receives , thus we have implemented an extra attribute called
         # self.m_edges_inverted with primary key as the receiving node exactly the opposite of self.m_edges this
@@ -88,7 +96,8 @@ class DiGraph(GraphInterface):
     # we must also delete the edges using this node as src/dst
 
     def remove_edge(self, node_id1: int, node_id2: int) -> bool:
-
+        if node_id2 not in self.m_edges[node_id1].keys():
+            return False
         temp = DiGraph.m_mc
 
         for key in list((self.m_edges[node_id1]).keys()):
@@ -106,7 +115,7 @@ class DiGraph(GraphInterface):
         return dict((x, y) for x, y in self.m_vertices.items())
 
     def all_in_edges_of_node(self, id1: int) -> dict:
-        return dict((x,y.weight) for x,y in self.m_edges_inverted[id1].items())
+        return dict((x, y.weight) for x, y in self.m_edges_inverted[id1].items())
 
     def all_out_edges_of_node(self, id1: int) -> dict:
         return dict((x, y.weight) for x, y in self.m_edges[id1].items())
