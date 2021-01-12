@@ -36,14 +36,14 @@ class GraphAlgo(GraphAlgoInterface):
 
 
     def save_to_json(self, file_name: str) -> bool:
-        dictionary_vertices = copy.copy(self.m_graph.m_vertices)
-        dictionary_edges = copy.copy(
+        dictionary_vertices = copy.deepcopy(self.m_graph.m_vertices)
+        dictionary_edges = copy.deepcopy(
             self.m_graph.m_edges)  # we need to make the edges more readable EdgeData -> {src:x , dst:y, weight: z}
-        dictionary_edges_inverted = copy.copy(self.m_graph.m_edges)
+        dictionary_edges_inverted = copy.deepcopy(self.m_graph.m_edges_inverted)
         mc = self.m_graph.m_mc
         quantity = self.m_graph.edge_quantity
-        print(f"new edges : {dictionary_edges}")
-        print(f"new inverted :{dictionary_edges_inverted}")
+        # print(f"new edges : {dictionary_edges}")
+        # print(f"new inverted :{dictionary_edges_inverted}")
         for x, y in dictionary_vertices.items():
             y[0] = {"key": str(y[0].key)}
 
