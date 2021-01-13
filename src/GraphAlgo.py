@@ -62,13 +62,13 @@ class GraphAlgo(GraphAlgoInterface):
         with open(f'{file_name}.json', 'w') as f:
             json.dump(dict, f)
 
-    def shortest_path(self, id1: int, id2: int) -> (float, list): #TODO : impl
+    def shortest_path(self, id1: int, id2: int) -> (float, list):  # TODO : impl
         pass
 
-    def connected_component(self, id1: int) -> list:#TODO : impl
+    def connected_component(self, id1: int) -> list:  # TODO : impl
         pass
 
-    def connected_components(self) -> List[list]:#TODO : impl
+    def connected_components(self) -> List[list]:  # TODO : impl
         pass
 
     def plot_graph(self) -> None:
@@ -82,6 +82,22 @@ class GraphAlgo(GraphAlgoInterface):
             plt.plot(x_axis, y_axis, marker="o", c="b", ms=14)
             plt.text(x_axis + 0.10, y_axis + 0.10, key, size=10, c="r")
         # now let's draw the edges for each one of the vertices using the methods we impl'd
+        #l = list(coordinates.values())
+        # maxx = -100
+        # maxxy = -100
+        # avgx = 0
+        # avgy = 0
+        # for x, y, z in l:
+        #     avgx += x
+        #     avgy += y
+        #     if x > maxx:
+        #         maxx = x
+        #     if y > maxxy:
+        #         maxxy = y
+        # print(f"x:{maxx},y:{maxxy}")
+        # print(l)
+        # avgx =avgx/len(l)
+        # avgy = avgy / len(l)
         for key in g_nodes.keys():
             neighbors = self.m_graph.all_out_edges_of_node(key)
             for target in neighbors.keys():
@@ -91,10 +107,16 @@ class GraphAlgo(GraphAlgoInterface):
                 y = start[1]
                 xd = end[0]
                 yd = end[1]
+                # ratio1=avgx/7
+                # ratio2=avgy/7
+                ratio = 1
+                h_width = ratio * (10 * 0.025)
+                h_length = ratio * 0.5
+                a_width = ratio * 0.04
                 weight_x_axis = (x + xd) / 2
                 weight_y_axis = (y + yd) / 2
-                plt.arrow(x, y, xd - x, yd - y, ec="r", joinstyle="round", fc="r", width=0.04, head_width=10 * 0.025,
-                          head_length=0.5, length_includes_head=True)
+                plt.arrow(x, y, xd - x, yd - y, ec="r", joinstyle="round", fc="r", width=a_width, head_width=h_width,
+                          head_length=h_length, length_includes_head=True)
                 plt.text(weight_x_axis + 0.10, weight_y_axis + 0.10, neighbors[target], color="r")
 
         plt.show()

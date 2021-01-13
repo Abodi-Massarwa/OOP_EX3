@@ -1,3 +1,5 @@
+import random
+
 from GraphInterface import GraphInterface
 
 
@@ -27,6 +29,9 @@ class DiGraph(GraphInterface):
             else:
                 self.key = key
             self.coordinate = coordinate
+            if coordinate is None:
+                self.coordinate=(random.uniform(0,20),random.uniform(0,20),random.uniform(0,20))
+
 
         def __int__(self, key: int):
             self.key = id
