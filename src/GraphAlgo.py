@@ -62,13 +62,13 @@ class GraphAlgo(GraphAlgoInterface):
         with open(f'{file_name}.json', 'w') as f:
             json.dump(dict, f)
 
-    def shortest_path(self, id1: int, id2: int) -> (float, list):
+    def shortest_path(self, id1: int, id2: int) -> (float, list): #TODO : impl
         pass
 
-    def connected_component(self, id1: int) -> list:
+    def connected_component(self, id1: int) -> list:#TODO : impl
         pass
 
-    def connected_components(self) -> List[list]:
+    def connected_components(self) -> List[list]:#TODO : impl
         pass
 
     def plot_graph(self) -> None:
