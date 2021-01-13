@@ -7,6 +7,6 @@ Using Github.
 
 ![Alt Text](https://media.giphy.com/media/vFKqnCdLPNOKc/giphy.gif)
 
-![Alt Text](https://giphy.com/gifs/5Y1bP0dftNhuRzQehp)
+![Alt Text](https://media2.giphy.com/media/5Y1bP0dftNhuRzQehp/giphy.gif)
 
 
