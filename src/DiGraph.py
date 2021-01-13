@@ -19,13 +19,14 @@ class DiGraph(GraphInterface):
     class GNode:
         static_key = 0
 
-        def __init__(self, key=-1):
+        def __init__(self, key=-1, coordinate: tuple = None):
 
             if key == -1:
                 self.key = self.static_key
                 DiGraph.GNode.static_key += 1
             else:
                 self.key = key
+            self.coordinate = coordinate
 
         def __int__(self, key: int):
             self.key = id
@@ -57,7 +58,7 @@ class DiGraph(GraphInterface):
     def add_node(self, node_id: int, pos: tuple = None) -> bool:
         if node_id in self.m_vertices.keys():
             return False
-        self.m_vertices[node_id] = [DiGraph.GNode(node_id), pos]
+        self.m_vertices[node_id] = DiGraph.GNode(node_id, pos)
         self.m_edges[node_id] = {}
         self.m_edges_inverted[node_id] = {}
         self.m_mc += 1
@@ -144,7 +145,6 @@ class DiGraph(GraphInterface):
 
     def all_out_edges_of_node(self, id1: int) -> dict:
         return dict((x, y.weight) for x, y in self.m_edges[id1].items())
-
 
 # def parse_json(graph: DiGraph):
 #     graph_copy = DiGraph()

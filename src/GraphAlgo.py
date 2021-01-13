@@ -3,6 +3,7 @@ from typing import List
 import json
 from GraphAlgoInterface import GraphAlgoInterface
 from src.DiGraph import DiGraph
+import matplotlib.pyplot as plt
 
 
 class GraphAlgo(GraphAlgoInterface):
@@ -23,17 +24,17 @@ class GraphAlgo(GraphAlgoInterface):
         self.m_graph.edge_quantity = data['edge_quantity']
 
         for x, y in data['m_vertices'].items():
-            y[0] = DiGraph.GNode(y)
+            data['m_vertices'][x] = DiGraph.GNode(x, y["pos"])
 
         for key, inner_dictionary in list(self.m_graph.m_edges.items()):
             for src, edge in list(inner_dictionary.items()):
-                inner_dictionary[src] = DiGraph.GEdge(inner_dictionary[src]["src"], inner_dictionary[src]["dst"],inner_dictionary[src]["weight"])
+                inner_dictionary[src] = DiGraph.GEdge(inner_dictionary[src]["src"], inner_dictionary[src]["dst"],
+                                                      inner_dictionary[src]["weight"])
 
         for key, inner_dictionary in list(self.m_graph.m_edges_inverted.items()):
             for src, edge in list(inner_dictionary.items()):
-                inner_dictionary[src] = DiGraph.GEdge(inner_dictionary[src]["src"], inner_dictionary[src]["dst"],inner_dictionary[src]["weight"])
-
-
+                inner_dictionary[src] = DiGraph.GEdge(inner_dictionary[src]["src"], inner_dictionary[src]["dst"],
+                                                      inner_dictionary[src]["weight"])
 
     def save_to_json(self, file_name: str) -> bool:
         dictionary_vertices = copy.deepcopy(self.m_graph.m_vertices)
@@ -45,7 +46,7 @@ class GraphAlgo(GraphAlgoInterface):
         # print(f"new edges : {dictionary_edges}")
         # print(f"new inverted :{dictionary_edges_inverted}")
         for x, y in dictionary_vertices.items():
-            y[0] = {"key": str(y[0].key)}
+            dictionary_vertices[x] = {"key": str(y.key), "pos": y.coordinate}
 
         for x, y in dictionary_edges.items():
             for id, edge in y.items():
@@ -71,4 +72,29 @@ class GraphAlgo(GraphAlgoInterface):
         pass
 
     def plot_graph(self) -> None:
-        pass
+        coordinates = {}
+        g_nodes = self.m_graph.get_all_v()
+        for key in g_nodes.keys():
+            coordinates[key] = g_nodes[key].coordinate
+            x_axis = g_nodes[key].coordinate[0]
+            y_axis = g_nodes[key].coordinate[1]
+            # z axis is useless since we're not working with 3d graph
+            plt.plot(x_axis, y_axis, marker="o", c="b", ms=14)
+            plt.text(x_axis + 0.10, y_axis + 0.10, key, size=10, c="r")
+        # now let's draw the edges for each one of the vertices using the methods we impl'd
+        for key in g_nodes.keys():
+            neighbors = self.m_graph.all_out_edges_of_node(key)
+            for target in neighbors.keys():
+                start = coordinates[key]
+                end = coordinates[target]
+                x = start[0]
+                y = start[1]
+                xd = end[0]
+                yd = end[1]
+                weight_x_axis = (x + xd) / 2
+                weight_y_axis = (y + yd) / 2
+                plt.arrow(x, y, xd - x, yd - y, ec="r", joinstyle="round", fc="r", width=0.04, head_width=10 * 0.025,
+                          head_length=0.5, length_includes_head=True)
+                plt.text(weight_x_axis + 0.10, weight_y_axis + 0.10, neighbors[target], color="r")
+
+        plt.show()
