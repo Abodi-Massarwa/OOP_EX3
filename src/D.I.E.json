@@ -1,5 +1,0 @@
-{"m_mc": 6,
-  "m_vertices": {"0": {"key": 0}, "1": {"key": 1}, "2": {"key": 2}},
-  "m_edges": {"0": {"2": {"src": 0, "dst": 2, "weight": 100}}, "1": {"0": {"src": 1, "dst": 0, "weight": 100}}, "2": {"1": {"src": 2, "dst": 1, "weight": 100}}},
-  "m_edges_inverted": {"0": {"1": {"src": 1, "dst": 0, "weight": 100}}, "1": {"2": {"src": 2, "dst": 1, "weight": 100}}, "2": {"0": {"src": 0, "dst": 2, "weight": 100}}},
-  "edge_quantity": 3}
