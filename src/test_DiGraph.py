@@ -20,12 +20,12 @@ class TestDiGraph(TestCase):
     def test_get_mc(self):
         expected = 100000 + (100000 - 1) * 2
         self.assertTrue(self.graph.get_mc() % expected == 0)
-        for i in range (150000,200000): # 50,0000 action *4 = 200,000
+        for i in range(150000, 200000):  # 50,0000 action *3 = 150,000
             self.graph.add_node(i)
-            self.graph.add_edge(i,0,4)
-            self.graph.remove_edge(i,0)
-            self.graph.remove_node(i)
-        self.assertTrue(self.graph.get_mc() % (expected+200000) == 0)
+            self.graph.add_edge(i, 0, 4)
+            self.graph.remove_edge(i, 0)
+            #self.graph.remove_node(i)
+        self.assertTrue(self.graph.get_mc() % (expected + 150000) == 0)
 
     def test_v_size(self):
         self.assertEqual(self.graph.v_size(), 100000)
@@ -71,10 +71,9 @@ class TestDiGraph(TestCase):
     #
     def test_all_in_edges_of_node(self):
         self.assertTrue(len(self.graph.all_in_edges_of_node(0)) == self.graph.v_size() - 1)
-        for i in range (50000,100000):
+        for i in range(50000, 100000):
             self.graph.remove_edge(i, 0)
-        self.assertTrue(len(self.graph.all_in_edges_of_node(0)) == self.graph.v_size()/2 - 1)
-
+        self.assertTrue(len(self.graph.all_in_edges_of_node(0)) == self.graph.v_size() / 2 - 1)
 
     #
     def test_all_out_edges_of_node(self):

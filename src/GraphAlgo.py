@@ -1,4 +1,5 @@
 import copy
+import math
 from typing import List
 import json
 from GraphAlgoInterface import GraphAlgoInterface
@@ -63,13 +64,53 @@ class GraphAlgo(GraphAlgoInterface):
             json.dump(dict, f)
 
     def shortest_path(self, id1: int, id2: int) -> (float, list):  # TODO : impl
-        pass
+        # shortest paths is a dict of nodes
+        # whose value is a tuple of (previous node, weight)
+        shortest_paths = {id1: (None, 0)}
+        current_node = id1
+        visited = set()
+
+        while current_node != id2:
+            visited.add(current_node)
+            destinations = self.m_graph.m_edges[current_node]
+            weight_to_current_node = shortest_paths[current_node][1]
+
+            for next_node in destinations:
+                weight = self.m_graph.m_edges[current_node][next_node].weight + weight_to_current_node
+                if next_node not in shortest_paths:
+                    shortest_paths[next_node] = (current_node, weight)
+                else:
+                    current_shortest_weight = shortest_paths[next_node][1]
+                    if current_shortest_weight > weight:
+                        shortest_paths[next_node] = (current_node, weight)
+
+            next_destinations = {node: shortest_paths[node] for node in shortest_paths if node not in visited}
+            if not next_destinations:
+                return (float('inf'), [])
+            # next node is the destination with the lowest weight
+            current_node = min(next_destinations, key=lambda k: next_destinations[k][1])
+
+        # Work back through destinations in shortest path
+        path = []
+        while current_node is not None:
+            path.append(current_node)
+            next_node = shortest_paths[current_node][0]
+            current_node = next_node
+        # Reverse path
+        path = path[::-1]
+
+        return (shortest_paths[id2][1], path)
 
     def connected_component(self, id1: int) -> list:  # TODO : impl
-        pass
+        scc_list = self.connected_components()
+        # We will use our impl of scc -> List[list] and simply perform a search in the list of lists ,
+        # the one consists of our id1 would be returned
+        for i in scc_list:
+            if id1 in i:
+                return i
 
     def connected_components(self) -> List[list]:  # TODO : impl
-        pass
+        return self.m_graph.sccList()
 
     def plot_graph(self) -> None:
         coordinates = {}
@@ -82,7 +123,7 @@ class GraphAlgo(GraphAlgoInterface):
             plt.plot(x_axis, y_axis, marker="o", c="b", ms=14)
             plt.text(x_axis + 0.10, y_axis + 0.10, key, size=10, c="r")
         # now let's draw the edges for each one of the vertices using the methods we impl'd
-        #l = list(coordinates.values())
+        # l = list(coordinates.values())
         # maxx = -100
         # maxxy = -100
         # avgx = 0

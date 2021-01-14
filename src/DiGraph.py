@@ -1,4 +1,7 @@
+import copy
 import random
+
+from typing import List
 
 from GraphInterface import GraphInterface
 
@@ -30,8 +33,7 @@ class DiGraph(GraphInterface):
                 self.key = key
             self.coordinate = coordinate
             if coordinate is None:
-                self.coordinate=(random.uniform(0,20),random.uniform(0,20),random.uniform(0,20))
-
+                self.coordinate = (random.uniform(0, 20), random.uniform(0, 20), random.uniform(0, 20))
 
         def __int__(self, key: int):
             self.key = id
@@ -70,6 +72,56 @@ class DiGraph(GraphInterface):
         return True
         pass
 
+    def depthFirstSearch(self, n, visited_node, result):
+        visited_node[n] = True
+        result.append(n)
+
+        for i in self.m_edges[n].keys():
+            if not visited_node[i]:
+                self.depthFirstSearch(i, visited_node,result)
+
+    def inOrderFill(self, d, visited_vertex, stack):
+        visited_vertex[d] = True
+        # traversing in the keys of the destination nodes
+        for i in self.m_edges[d].keys():
+            if not visited_vertex[i]:
+                self.inOrderFill(i, visited_vertex, stack)
+        stack = stack.append(d)
+
+    # return a list of lists containing the strongly connected components in our DiGraph
+    def sccList(self) -> List[list]:
+        vertices_size = self.v_size()
+        stack = []
+        visited_node = [False for i in range(vertices_size)]
+
+        for i in range(self.v_size()):
+            if not visited_node[i]:
+                self.inOrderFill(i, visited_node, stack)
+
+        inverted_graph = self.invert()
+
+        visited_node = [False for i in range(vertices_size)]
+        result = []
+        current_result=[]
+        while stack:
+            i = stack.pop()
+            if not visited_node[i]:
+                inverted_graph.depthFirstSearch(i, visited_node, current_result)
+                result.append(copy.deepcopy(current_result))
+                current_result.clear()
+
+        return result
+
+    # inverts the edges (a->b) to (b->a)
+    def invert(self):
+        inverted_g = DiGraph()
+        inverted_g.m_vertices = copy.deepcopy(self.m_vertices)
+        inverted_g.m_edges = copy.deepcopy(self.m_edges_inverted)
+        inverted_g.m_edges_inverted = copy.deepcopy(self.m_edges)
+        inverted_g.m_mc = self.m_mc
+        inverted_g.edge_quantity = self.edge_quantity
+        return inverted_g
+
     def remove_node(self, node_id: int) -> bool:
         if node_id not in self.m_vertices.keys():
             return False
@@ -99,7 +151,7 @@ class DiGraph(GraphInterface):
                 self.m_edges[senders].pop(node_id)
 
                 k += 1
-            self.m_mc += 1
+            self.m_mc += k+1
             self.m_edges_inverted.pop(node_id)
             self.edge_quantity -= k
 
