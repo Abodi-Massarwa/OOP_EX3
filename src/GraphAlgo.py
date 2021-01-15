@@ -3,6 +3,7 @@ import math
 from typing import List
 import json
 from GraphAlgoInterface import GraphAlgoInterface
+from src import GraphInterface
 from src.DiGraph import DiGraph
 import matplotlib.pyplot as plt
 
@@ -11,6 +12,9 @@ class GraphAlgo(GraphAlgoInterface):
 
     def __init__(self, graph: DiGraph = None):
         self.m_graph = graph
+
+    def get_graph(self) -> GraphInterface:
+        return self.m_graph
 
     def load_from_json(self, file_name: str) -> bool:
 
@@ -23,7 +27,8 @@ class GraphAlgo(GraphAlgoInterface):
                 if 'pos' in i.keys():
                     position_list = i['pos'].split(',')
                     graph.m_vertices[i['id']] = DiGraph.GNode(i['id'],
-                                                              (float(position_list[0]), float(position_list[1]), float(position_list[2])))
+                                                              (float(position_list[0]), float(position_list[1]),
+                                                               float(position_list[2])))
 
             for i in json_dict['Edges']:
                 # since our m_edges structure is a dict(dict) we want to prevent key errors
@@ -35,7 +40,7 @@ class GraphAlgo(GraphAlgoInterface):
                 graph.m_edges_inverted[i['dest']] = {}
 
             for i in json_dict['Edges']:
-                current_edge=DiGraph.GEdge(float(i['src']), float(i['dest']), float(i['w']))
+                current_edge = DiGraph.GEdge(float(i['src']), float(i['dest']), float(i['w']))
                 graph.m_edges[i['src']][i['dest']] = current_edge
                 graph.m_edges_inverted[i['dest']][i['src']] = current_edge
             # print(graph.m_edges)
@@ -94,7 +99,10 @@ class GraphAlgo(GraphAlgoInterface):
 
         while current_node != id2:
             visited.add(current_node)
-            destinations = self.m_graph.m_edges[current_node]
+            if(current_node not in self.m_graph.m_edges.keys()):
+                destinations= {}
+            else:
+                destinations = self.m_graph.m_edges[current_node]
             weight_to_current_node = shortest_paths[current_node][1]
 
             for next_node in destinations:
