@@ -3,7 +3,7 @@
 About the project 
 In this project we built a directed graph which is also a weighted graph in Python 
 Also in this project you will find some algorithms that can be done on a graph that is both directed and weighted.
-We use Dijkstra's algorithm to find the shortest path between two nodes and BFS algorithms to find the SSC 
+We use Dijkstra's algorithm to find the shortest path between two nodes and DFS algorithms to find the SSC 
 We encountered some problem in the task that hindered us in the last hours from submitting the assignment and we had to deal with them.
 we had to use Dictionary. we used to store data values in key: value pairs.
 A dictionary is a collection which is unordered, changeable and does not allow duplicates. (key , Nodedata)
@@ -21,8 +21,8 @@ A directed graph is graph, a set of objects that are connected together, where a
 # Dijkstra's algorithm
 Dijkstra's algorithm (or Dijkstra's Shortest Path First algorithm, SPF algorithm)[4] is an algorithm for finding the shortest paths between nodes in a graph,
 Let the node at which we are starting be called the initial node. Let the distance of node Y be the distance from the initial node to Y. Dijkstra's algorithm will assign some initial distance values and will try to improve them step by step.
-# Breadth-first search
-Breadth first search is a graph traversal algorithm that starts traversing the graph from root node and explores all the neighbouring nodes. Then, it selects the nearest node and explore all the unexplored nodes. The algorithm follows the same process for each of the nearest node until it finds the goal.
+# Depth-first search
+Depth-first search (DFS) is an algorithm for traversing or searching tree or graph data structures. The algorithm starts at the root node (selecting some arbitrary node as the root node in the case of a graph) and explores as far as possible along each branch before backtracking.
          
 
 
