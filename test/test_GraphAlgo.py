@@ -45,7 +45,6 @@ class TestGraphAlgo(TestCase):
         self.assertTrue(self.graph.m_graph.v_size() == algo2.m_graph.v_size())
         self.assertTrue(self.graph.m_graph.e_size() == algo2.m_graph.e_size())
 
-
     def test_shortest_path(self):
         self.assertTrue(self.graph.shortest_path(0, 6) == (19.5, [0, 2, 4, 5, 6]))
         self.assertTrue(self.graph.shortest_path(0, 5) == (17, [0, 2, 4, 5]))

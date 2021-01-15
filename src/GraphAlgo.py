@@ -2,7 +2,7 @@ import copy
 import math
 from typing import List
 import json
-from GraphAlgoInterface import GraphAlgoInterface
+from src.GraphAlgoInterface import GraphAlgoInterface
 from src import GraphInterface
 from src.DiGraph import DiGraph
 import matplotlib.pyplot as plt

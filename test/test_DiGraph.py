@@ -24,7 +24,7 @@ class TestDiGraph(TestCase):
             self.graph.add_node(i)
             self.graph.add_edge(i, 0, 4)
             self.graph.remove_edge(i, 0)
-            #self.graph.remove_node(i)
+            # self.graph.remove_node(i)
         self.assertTrue(self.graph.get_mc() % (expected + 150000) == 0)
 
     def test_v_size(self):

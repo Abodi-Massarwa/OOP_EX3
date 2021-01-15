@@ -1,11 +1,10 @@
 import copy
 import random
 import sys
-sys.setrecursionlimit(1500)
 
 from typing import List
 
-from GraphInterface import GraphInterface
+from src.GraphInterface import GraphInterface
 
 
 class DiGraph(GraphInterface):
