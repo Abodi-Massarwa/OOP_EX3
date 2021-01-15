@@ -31,7 +31,7 @@ class TestGraphAlgo(TestCase):
     def test_load_save_from_json(self):
         self.graph.save_to_json("../data/test_GraphAlgo.json")
         algo2 = GraphAlgo()
-        algo2.load_from_json("test_GraphAlgo.json")
+        algo2.load_from_json("../data/test_GraphAlgo.json")
 
         for i in self.graph.m_graph.m_vertices:
             current_node = self.graph.m_graph.m_vertices[i]
