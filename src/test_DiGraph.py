@@ -55,11 +55,11 @@ class TestDiGraph(TestCase):
 
         for j in range(100000):
             self.assertTrue(self.graph.remove_node(j))
-        print(self.graph.e_size())
-        print(self.graph.v_size())
-        print(self.graph.m_vertices)
-        print(self.graph.m_edges)
-        print(self.graph.m_edges_inverted)
+        # print(self.graph.e_size())
+        # print(self.graph.v_size())
+        # print(self.graph.m_vertices)
+        # print(self.graph.m_edges)
+        # print(self.graph.m_edges_inverted)
 
     def test_remove_edge(self):
         for i in range(200000, 300000):

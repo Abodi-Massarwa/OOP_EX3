@@ -32,24 +32,9 @@ class TestGraphAlgo(TestCase):
             print("networkX graph: " + str(end_time - start_time))
 
     def testConnectedComponent(self):
-        for file_num in range(1, 7):
+        for file_num in range(1, 5):
             graph_path = get_path(file_num)
-            self.graph_algo.load_from_json(graph_path)
-            start_time = time.time()
-            self.graph_algo.connected_component(8)
-            end_time = time.time()
-            print("")
-            print("testing Connected Component - " + graph_path)
-            print("graph algo: " + str(end_time - start_time))
-            self.nx_from_json(graph_path)
-            start_time = time.time()
-            self.ConnectedComponent(self.nx_graph, 8)
-            end_time = time.time()
-            print("networkX graph: " + str(end_time - start_time))
-
-    def testConnectedComponent(self):
-        for file_num in range(1, 7):
-            graph_path = get_path(file_num)
+            self.graph_algo=GraphAlgo()
             self.graph_algo.load_from_json(graph_path)
             start_time = time.time()
             self.graph_algo.connected_components()

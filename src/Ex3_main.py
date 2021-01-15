@@ -83,7 +83,8 @@ def check2():
     print(dist, path)
     dist, path = g_algo.shortest_path(2, 20)
     print(dist, path)
-    print(g_algo.connected_component(0))
+    for i in range(g_algo.m_graph.v_size()):
+        print(g_algo.connected_component(i))
     print(g_algo.connected_components())
     g_algo.plot_graph()
 

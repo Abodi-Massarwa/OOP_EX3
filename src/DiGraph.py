@@ -1,5 +1,7 @@
 import copy
 import random
+import sys
+sys.setrecursionlimit(1500)
 
 from typing import List
 
@@ -86,13 +88,15 @@ class DiGraph(GraphInterface):
     def inOrderFill(self, d, visited_vertex, stack):
         visited_vertex[d] = True
         # traversing in the keys of the destination nodes
-        for i in self.m_edges[d].keys():
-            if not visited_vertex[i]:
-                self.inOrderFill(i, visited_vertex, stack)
-        stack = stack.append(d)
+        if d in self.m_edges.keys():
+            for i in self.m_edges[d].keys():
+                if not visited_vertex[i]:
+                    self.inOrderFill(i, visited_vertex, stack)
+            stack = stack.append(d)
 
     # return a list of lists containing the strongly connected components in our DiGraph
     def sccList(self) -> List[list]:
+        sys.setrecursionlimit(4000)
         vertices_size = self.v_size()
         stack = []
         visited_node = [False for i in range(vertices_size)]
