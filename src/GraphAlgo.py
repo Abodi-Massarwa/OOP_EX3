@@ -14,54 +14,76 @@ class GraphAlgo(GraphAlgoInterface):
 
     def load_from_json(self, file_name: str) -> bool:
 
-        with open(f'{file_name}.json') as f:
-            data = json.load(f)
+        with open(f'{file_name}') as f:
+            json_dict = json.load(f)
+        try:
+            graph = DiGraph()
+            self.m_graph = graph
+            for i in json_dict['Nodes']:
+                if 'pos' in i.keys():
+                    position_list = i['pos'].split(',')
+                    graph.m_vertices[i['id']] = DiGraph.GNode(i['id'],
+                                                              (float(position_list[0]), float(position_list[1]), float(position_list[2])))
 
-        self.m_graph = DiGraph()
-        self.m_graph.m_mc = data['m_mc']
-        self.m_graph.m_vertices = data['m_vertices']
-        self.m_graph.m_edges = data['m_edges']
-        self.m_graph.m_edges_inverted = data['m_edges_inverted']
-        self.m_graph.edge_quantity = data['edge_quantity']
+            for i in json_dict['Edges']:
+                # since our m_edges structure is a dict(dict) we want to prevent key errors
+                # by providing empty places for all possible source nodes
+                graph.m_edges[i['src']] = {}
+            for i in json_dict['Edges']:
+                # since our m_edges structure is a dict(dict) we want to prevent key errors
+                # by providing empty places for all possible source nodes
+                graph.m_edges_inverted[i['dest']] = {}
 
-        for x, y in data['m_vertices'].items():
-            data['m_vertices'][x] = DiGraph.GNode(x, y["pos"])
+            for i in json_dict['Edges']:
+                current_edge=DiGraph.GEdge(float(i['src']), float(i['dest']), float(i['w']))
+                graph.m_edges[i['src']][i['dest']] = current_edge
+                graph.m_edges_inverted[i['dest']][i['src']] = current_edge
+            # print(graph.m_edges)
+            # print(graph.m_edges_inverted)
+        except Exception as ex:
+            print(ex)
+            return False
+        return True
 
-        for key, inner_dictionary in list(self.m_graph.m_edges.items()):
-            for src, edge in list(inner_dictionary.items()):
-                inner_dictionary[src] = DiGraph.GEdge(inner_dictionary[src]["src"], inner_dictionary[src]["dst"],
-                                                      inner_dictionary[src]["weight"])
-
-        for key, inner_dictionary in list(self.m_graph.m_edges_inverted.items()):
-            for src, edge in list(inner_dictionary.items()):
-                inner_dictionary[src] = DiGraph.GEdge(inner_dictionary[src]["src"], inner_dictionary[src]["dst"],
-                                                      inner_dictionary[src]["weight"])
+        # self.m_graph = DiGraph()
+        # self.m_graph.m_mc = data['m_mc']
+        # self.m_graph.m_vertices = data['m_vertices']
+        # self.m_graph.m_edges = data['m_edges']
+        # self.m_graph.m_edges_inverted = data['m_edges_inverted']
+        # self.m_graph.edge_quantity = data['edge_quantity']
+        #
+        # for x, y in data['m_vertices'].items():
+        #     data['m_vertices'][x] = DiGraph.GNode(x, y["pos"])
+        #
+        # for key, inner_dictionary in list(self.m_graph.m_edges.items()):
+        #     for src, edge in list(inner_dictionary.items()):
+        #         inner_dictionary[src] = DiGraph.GEdge(inner_dictionary[src]["src"], inner_dictionary[src]["dst"],
+        #                                               inner_dictionary[src]["weight"])
+        #
+        # for key, inner_dictionary in list(self.m_graph.m_edges_inverted.items()):
+        #     for src, edge in list(inner_dictionary.items()):
+        #         inner_dictionary[src] = DiGraph.GEdge(inner_dictionary[src]["src"], inner_dictionary[src]["dst"],
+        #                                               inner_dictionary[src]["weight"])
 
     def save_to_json(self, file_name: str) -> bool:
-        dictionary_vertices = copy.deepcopy(self.m_graph.m_vertices)
-        dictionary_edges = copy.deepcopy(
-            self.m_graph.m_edges)  # we need to make the edges more readable EdgeData -> {src:x , dst:y, weight: z}
-        dictionary_edges_inverted = copy.deepcopy(self.m_graph.m_edges_inverted)
-        mc = self.m_graph.m_mc
-        quantity = self.m_graph.edge_quantity
-        # print(f"new edges : {dictionary_edges}")
-        # print(f"new inverted :{dictionary_edges_inverted}")
-        for x, y in dictionary_vertices.items():
-            dictionary_vertices[x] = {"key": str(y.key), "pos": y.coordinate}
+        json_dict = dict()
+        json_dict["Nodes"] = []
+        json_dict["Edges"] = []
+        for i in range(self.m_graph.v_size()):
+            current_node = self.m_graph.m_vertices[i]
+            json_dict["Nodes"].append({"id": current_node.key,
+                                       "pos": f"{current_node.coordinate[0]},{current_node.coordinate[1]},{current_node.coordinate[2]}"})
 
-        for x, y in dictionary_edges.items():
-            for id, edge in y.items():
-                dictionary_edges[x][id] = {"src": edge.src, "dst": edge.dst, "weight": edge.weight}
+        for inner_dict in self.m_graph.m_edges.values():
+            for edge in inner_dict.values():
+                json_dict["Edges"].append({'src': edge.src, 'dest': edge.dst, 'w': edge.weight})
 
-        for x, y in dictionary_edges_inverted.items():
-            for id, edge in y.items():
-                dictionary_edges_inverted[x][id] = {"src": edge.src, "dst": edge.dst, "weight": edge.weight}
-
-        dict = {"m_mc": mc, "edge_quantity": quantity, "m_vertices": dictionary_vertices, "m_edges": dictionary_edges,
-                "m_edges_inverted": dictionary_edges_inverted}
-
-        with open(f'{file_name}.json', 'w') as f:
-            json.dump(dict, f)
+        try:
+            with open(f"{file_name}", 'w') as f:
+                json.dump(json_dict, f)
+                return True
+        except IOError:
+            return False
 
     def shortest_path(self, id1: int, id2: int) -> (float, list):  # TODO : impl
         # shortest paths is a dict of nodes

@@ -24,7 +24,7 @@ class DiGraph(GraphInterface):
     class GNode:
         static_key = 0
 
-        def __init__(self, key=-1, coordinate: tuple = None):
+        def __init__(self, key=-1, coordinate: tuple() = None):
 
             if key == -1:
                 self.key = self.static_key
@@ -43,7 +43,10 @@ class DiGraph(GraphInterface):
         pass
 
     def e_size(self) -> int:
-        return self.edge_quantity
+        size = 0
+        for i in self.m_edges.keys():
+            size += len(self.m_edges[i])
+        return size
 
     def get_mc(self) -> int:
         return self.m_mc
@@ -78,7 +81,7 @@ class DiGraph(GraphInterface):
 
         for i in self.m_edges[n].keys():
             if not visited_node[i]:
-                self.depthFirstSearch(i, visited_node,result)
+                self.depthFirstSearch(i, visited_node, result)
 
     def inOrderFill(self, d, visited_vertex, stack):
         visited_vertex[d] = True
@@ -102,7 +105,7 @@ class DiGraph(GraphInterface):
 
         visited_node = [False for i in range(vertices_size)]
         result = []
-        current_result=[]
+        current_result = []
         while stack:
             i = stack.pop()
             if not visited_node[i]:
@@ -151,7 +154,7 @@ class DiGraph(GraphInterface):
                 self.m_edges[senders].pop(node_id)
 
                 k += 1
-            self.m_mc += k+1
+            self.m_mc += k + 1
             self.m_edges_inverted.pop(node_id)
             self.edge_quantity -= k
 
@@ -198,9 +201,13 @@ class DiGraph(GraphInterface):
         return dict((x, y) for x, y in self.m_vertices.items())
 
     def all_in_edges_of_node(self, id1: int) -> dict:
+        if id1 not in self.m_edges_inverted.keys():
+            return {}
         return dict((x, y.weight) for x, y in self.m_edges_inverted[id1].items())
 
     def all_out_edges_of_node(self, id1: int) -> dict:
+        if id1 not in self.m_edges.keys():
+            return {}
         return dict((x, y.weight) for x, y in self.m_edges[id1].items())
 
 # def parse_json(graph: DiGraph):

@@ -29,17 +29,22 @@ class TestGraphAlgo(TestCase):
         self.graph = GraphAlgo(graph)
 
     def test_load_save_from_json(self):
-        self.graph.save_to_json("File")
+        self.graph.save_to_json("../data/test_GraphAlgo.json")
         algo2 = GraphAlgo()
-        algo2.load_from_json("File")
+        algo2.load_from_json("test_GraphAlgo.json")
 
-        for key in algo2.m_graph.m_vertices.keys():
-            self.assertTrue(self.graph.m_graph.m_vertices[int(key)].key == int(algo2.m_graph.m_vertices[key].key))
+        for i in self.graph.m_graph.m_vertices:
+            current_node = self.graph.m_graph.m_vertices[i]
+            current_other_node = algo2.m_graph.m_vertices[i]
+            self.assertTrue(current_other_node.key == current_other_node.key
+                            and current_node.coordinate == current_other_node.coordinate)
 
         for i in range(self.graph.m_graph.v_size()):
-            list1 = [value for value in algo2.m_graph.all_out_edges_of_node(str(i)).values()]
-            list2 = [value for value in self.graph.m_graph.all_out_edges_of_node(i).values()]
-            self.assertTrue(list2 == list1)
+            self.assertTrue(self.graph.m_graph.all_in_edges_of_node(i) == algo2.m_graph.all_in_edges_of_node(i))
+            self.assertTrue(self.graph.m_graph.all_out_edges_of_node(i) == algo2.m_graph.all_out_edges_of_node(i))
+        self.assertTrue(self.graph.m_graph.v_size() == algo2.m_graph.v_size())
+        self.assertTrue(self.graph.m_graph.e_size() == algo2.m_graph.e_size())
+
 
     def test_shortest_path(self):
         self.assertTrue(self.graph.shortest_path(0, 6) == (19.5, [0, 2, 4, 5, 6]))
