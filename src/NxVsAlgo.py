@@ -55,7 +55,7 @@ class TestGraphAlgo(TestCase):
             self.graph_algo.connected_components()
             end_time = time.time()
             print("")
-            print("testing Connected Component - " + graph_path)
+            print("testing Connected Components - " + graph_path)
             print("graph algo: " + str(end_time - start_time))
             self.nx_from_json(graph_path)
             start_time = time.time()
@@ -89,9 +89,9 @@ class TestGraphAlgo(TestCase):
 
     @staticmethod
     def ConnectedComponent(gx, id1: int):
-        for c_ls in networkx.strongly_connected_components(gx):
-            if id1 in c_ls:
-                return c_ls
+        for component_list in networkx.strongly_connected_components(gx):
+            if id1 in component_list:
+                return component_list
 
 
 def get_path(file_num):
